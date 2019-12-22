@@ -7,19 +7,23 @@ import Category from './dashboard/Category'
 const dashboardConfig = {
 	popularMovies: {
 		title: 'Popular Movies',
-		fetch: getPopularMovies
+		fetch: getPopularMovies,
+		type: 'movie'
 	},
 	popularSeries: {
 		title: 'Popular TV Series',
-		fetch: getPopularTvShows
+		fetch: getPopularTvShows,
+		type: 'tv'
 	},
 	familyMovies: {
 		title: 'Family',
-		fetch: getFamilyMovies
+		fetch: getFamilyMovies,
+		type: 'movie'
 	},
 	documentaryMovies: {
 		title: 'Documentary',
-		fetch: getDocumentaryMovies
+		fetch: getDocumentaryMovies,
+		type: 'movie'
 	}
 }
 
@@ -32,26 +36,40 @@ class Dashboard extends React.Component {
 		})
 	}
 	componentDidMount() {
-		const filterRequiredEntryData = body => body.results.map(entry => ({
+		const processEntryData = (body, category) => body.results.map(entry => ({
 			id: entry.id,
 			title: entry.title,
-			poster_path: entry.poster_path
+			poster_path: entry.poster_path,
+			type: dashboardConfig[category].type
 		}))
 		Object.keys(dashboardConfig).forEach(category => {
-			dashboardConfig[category].fetch().then(body => {
-				this.setState({[category]: filterRequiredEntryData(body)})
-			})
+			dashboardConfig[category].fetch()
+				.then(body => {
+					this.setState({[category]: processEntryData(body, category)})
+				})
+				.catch(error => {
+					this.setState({
+						error: true,
+						message: "Failed to load resources from the API"
+					})
+				})
 		})
 	}
 	render() {
-		console.log(this.state)
+		if (this.state.error) {
+			return (
+				<section>
+					{this.state.message}
+				</section>
+			)
+		}
 		const categories = Object.keys(dashboardConfig).map((category, index) => (
 			<Category title={dashboardConfig[category].title} entries={this.state[category]} key={index}/>
 		))
 		return (
-			<div>
+			<section>
 				{categories}
-			</div>
+			</section>
 		)
 	}
 }

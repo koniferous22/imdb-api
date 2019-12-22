@@ -42,3 +42,11 @@ export function getDocumentaryMovies(page=1) {
 		page
 	})
 }
+
+export function getMovieDetails(movieId) {
+	return apiRequest('/movie/' + movieId, {})
+}
+
+export function getTvShowDetails(tvId) {
+	return apiRequest('/tv/' + tvId, {})
+}

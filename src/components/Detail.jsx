@@ -38,10 +38,10 @@ class Detail extends React.Component {
 			this.setState({isLoading: true})
 			getData(this.props.id)
 				.then(body => {
-					console.log(body)
 					this.setState({
 						...filterRequiredKeys(body),
-						isLoading: false
+						isLoading: false,
+						error: false
 					})
 				})
 				.catch(error => {
@@ -95,7 +95,7 @@ class Detail extends React.Component {
 				{this.state.runtime && <li>{'Runtime: ' + this.state.runtime + ' minutes'}</li>}
 			</ul>
 		)
-		const image_path = this.state.images.posters.length > 0 ? this.state.images.backdrops[0].file_path : this.state.backdrop_path
+		const image_path = this.state.images.backdrops.length > 0 ? this.state.images.backdrops[0].file_path : this.state.backdrop_path
 		return (
 			<section>
 				<h4>

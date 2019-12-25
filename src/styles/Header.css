@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Cinzel');
+@import url('https://fonts.googleapis.com/css?family=Comfortaa');
+
+header {
+	grid-area: header;
+
+	position: fixed;
+	display: flex;
+
+	width: 100%;
+
+	flex-direction: row;
+	justify-content: space-between;
+
+	align-items: center;
+	background-color: #EEEEEE;
+}
+
+header h2 {
+	margin-left: 20px;
+	font-family: 'Cinzel'
+}
+
+header nav a {
+	text-decoration: none;
+	font-family: 'Comfortaa';
+	margin-right: 25px;
+}

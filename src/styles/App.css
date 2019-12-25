@@ -1,0 +1,12 @@
+.appGrid {
+	display: grid;
+	grid-template-columns: auto;
+	grid-template-rows: [row-start] 60px [header-end] auto [row-end];
+	grid-template-areas:
+		"header"
+		"page";
+}
+
+.appGrid section {
+	grid-area: page;
+}

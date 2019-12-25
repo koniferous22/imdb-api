@@ -4,14 +4,18 @@ import { Link } from 'react-router-dom'
 
 import appConfig from '../appConfig'
 
-const Category = props => {
+const Thumbnails = props => {
 	if (!props.entries || props.entries.length === 0) {
 		return <section />
 	}
 	const imageEntries = props.entries.map((entry, index) => (
 			<li key={index}>
 				<Link to={'/' + entry.type + '/' + entry.id}>
-					<img src={appConfig.TMDB_DASHBOARD_IMAGE_PATH + entry.poster_path} alt="Movie thumbnail"/>
+					{
+						entry.poster_path
+							? <img src={appConfig.TMDB_THUMBNAIL_IMAGE_PATH + entry.poster_path} alt="Movie thumbnail"/>
+							: <div>{entry.name}</div>
+					}
 				</Link>
 			</li>
 		))
@@ -27,4 +31,4 @@ const Category = props => {
 	)
 }
 
-export default Category
+export default Thumbnails

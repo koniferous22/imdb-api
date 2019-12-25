@@ -1,8 +1,10 @@
 import React from 'react'
 
-import Category from './Category'
+import Thumbnails from './Thumbnails'
 
 import { search } from '../requests/requests'
+
+import { processThumbnailData } from '../helper/functions'
 
 const mediaTypes = {
 	movie: {
@@ -32,7 +34,7 @@ class Search extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		const getResultsByMediaType = results => type => results.filter(result => result.media_type === type)
+		const processResultsByMediaType = results => type => processThumbnailData(type)(results.filter(result => result.media_type === type))
 
 
 		this.setState({
@@ -42,16 +44,17 @@ class Search extends React.Component {
 
 		search(this.state.value || '')
 			.then(body => {
-				console.log(body)
-				const filterResults = getResultsByMediaType(body.results)
+				//console.log(body.results)
+				const results = processResultsByMediaType(body.results)
 				Object.keys(mediaTypes).forEach(mediaType => {
 					this.setState({
-						[mediaType]: filterResults(mediaType)
-					})
+						[mediaType]: results(mediaType)
+					}, () => {console.log(this.state)})
 				})
 				this.setState({
-					loading: false
-				})
+					loading: false,
+					error: false
+				}, () => {console.log(this.state)})
 
 			})
 			.catch(error => {
@@ -78,7 +81,7 @@ class Search extends React.Component {
 				</section>
 			)	
 		} else {
-			content = Object.keys(mediaTypes).map((mediaType, index) => <Category key={index} title={mediaTypes[mediaType].label} entries={this.state[mediaType]} />)
+			content = Object.keys(mediaTypes).map((mediaType, index) => <Thumbnails key={index} title={mediaTypes[mediaType].label} entries={this.state[mediaType]} />)
 			content = <section>{content}</section>
 		}
 

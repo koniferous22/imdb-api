@@ -6,10 +6,12 @@ import Detail from './components/Detail'
 import Header from './components/Header'
 import Search from './components/Search'
 
+import './styles/App.css'
+
 function App() {
 	return (
 		<BrowserRouter>
-			<div>
+			<div className='appGrid'>
 				<Header />
 				<Switch>
 					<Route path='/search' render={(routeProps) => <Search />} />

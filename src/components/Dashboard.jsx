@@ -9,7 +9,9 @@ import {
 	getDocumentaryTvShows
 } from '../requests/requests'
 
-import Category from './Category'
+import { processThumbnailDataTranslateType } from '../helper/functions'
+
+import Thumbnails from './Thumbnails'
 
 const dashboardConfig = {
 	movies: {
@@ -39,44 +41,42 @@ const dashboardConfig = {
 			title: 'Documentary',
 			fetch: getDocumentaryTvShows
 		}
-	}
-	
-	
+	}	
 }
 
 class Dashboard extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {}
-		Object.keys(dashboardConfig[props.type]).forEach(category => {
+		Object.keys(dashboardConfig[props.type] || {}).forEach(category => {
 			this.state[category] = []
 		})
 	}
 
 	fetchData(type) {
-		const processEntryData = (body, category) => body.results.map(entry => ({
-			id: entry.id,
-			title: entry.title,
-			poster_path: entry.poster_path,
-			type
-		}))
+		const processEntryData = processThumbnailDataTranslateType(type)
 		if (!dashboardConfig[type]) {
+			
 			this.setState({
 				error: true,
 				message: "Invalid content type"
 			})
 			return;
 		}
+		
 		this.setState({
-			loading: true,
+			isLoading: true,
 			message: 'Loading...'
 		})
-		Object.keys(dashboardConfig[type]).forEach(category => {
+		Object.keys(dashboardConfig[type] || {}).forEach(category => {
+			
 			dashboardConfig[type][category].fetch()
 				.then(body => {
+					
 					this.setState({
-						[category]: processEntryData(body, category),
-						loading: false
+						[category]: processEntryData(body.results),
+						isLoading: false,
+						error: false
 					})
 				})
 				.catch(error => {
@@ -108,7 +108,7 @@ class Dashboard extends React.Component {
 				</section>
 			)
 		}
-		if (this.state.loading) {
+		if (this.state.isLoading) {
 			return (
 				<section>
 					{this.state.message}
@@ -116,8 +116,8 @@ class Dashboard extends React.Component {
 			)
 		}
 		const type = this.props.type
-		const categories = Object.keys(dashboardConfig[type]).map((category, index) => (
-			<Category title={dashboardConfig[type][category].title} entries={this.state[category]} key={index}/>
+		const categories = Object.keys(dashboardConfig[type] || {}).map((category, index) => (
+			<Thumbnails title={dashboardConfig[type][category].title} entries={this.state[category]} key={index}/>
 		))
 		return (
 			<section>

@@ -6,6 +6,8 @@ import { search } from '../requests/requests'
 
 import { processThumbnailData } from '../helper/functions'
 
+import '../styles/components/Search.css'
+
 const mediaTypes = {
 	movie: {
 		label: 'Movies'
@@ -82,7 +84,7 @@ class Search extends React.Component {
 			)	
 		} else {
 			content = Object.keys(mediaTypes).map((mediaType, index) => 
-				<Carousel 
+				<Carousel
 					key={index}
 					title={mediaTypes[mediaType].label}
 					entries={this.state[mediaType]}
@@ -93,11 +95,13 @@ class Search extends React.Component {
 
 		return (
 			<section className="content">
-				<h2>Search</h2>
-				<form onSubmit={this.handleSubmit}>
-					<input type="text" value={this.state.value} onChange={this.handleChange} />
-					<input type="submit" value="Search" />
-				</form>
+				<h3 className="title">Search</h3>
+				<div className="searchBar">
+					<form onSubmit={this.handleSubmit}>
+						<input type="text" value={this.state.value} onChange={this.handleChange} />
+						<input type="submit" value="Search" className="appButton searchButton"/>
+					</form>
+				</div>
 				{content}
 			</section>
 		)

@@ -7,6 +7,7 @@ import appConfig from '../appConfig'
 
 import { getMovieDetails, getTvShowDetails } from '../requests/requests'
 
+import '../styles/components/Detail.css'
 
 class Detail extends React.Component {
 
@@ -47,7 +48,7 @@ class Detail extends React.Component {
 				.catch(error => {
 					this.setState({
 						error: true,
-						message: 'Failed to load ' + (this.props.type || 'content') + ' detail',
+						message: 'Failed to load ' + (this.props.type || 'content') + ' detail-view',
 						isLoading: false
 					})
 				})
@@ -76,11 +77,13 @@ class Detail extends React.Component {
 		if (this.state.video) {
 			return (
 				<section className="content">
-					<h4>
-						{this.state.title}
-					</h4>
+					<div className="video-toolbar">
+						<h3 className="title">
+							{this.state.title}
+						</h3>
+						<button className="appButton goBack" onClick={this.onToggle}>Back</button>
+					</div>
 					<ShakaPlayer autoPlay src={'https://storage.googleapis.com/shaka-demo-assets/bbb-dark-truths-hls/hls.m3u8'} width={1280} height={720} />
-					<button onClick={this.onToggle}>Back</button>
 				</section>
 			)
 		}
@@ -95,22 +98,27 @@ class Detail extends React.Component {
 				{this.state.runtime && <li>{'Runtime: ' + this.state.runtime + ' minutes'}</li>}
 			</ul>
 		)
+		console.log('ass')
 		const image_path = this.state.images.backdrops.length > 0 ? this.state.images.backdrops[0].file_path : this.state.backdrop_path
 		return (
-			<section className="content">
-				<h4>
-					{this.state.title}
-				</h4>
-				<section>
-					{this.state.overview}
-				</section>
-				<section>
-					{metadata}
-				</section>
-				<section>
-					<button onClick={this.onToggle}>Play Trailer</button>
-				</section>
-				{this.state.poster_path && <img src={appConfig.TMDB_DETAIL_IMAGE_PATH + image_path } alt="Movie poster" />}
+			<section className="content detail-view">
+				<div className="content-info-wrapper">
+					<h3 className="title">
+						{this.state.title}
+					</h3>
+					<section className="overview">
+						{this.state.overview}
+					</section>
+					<section className="metadata">
+						{metadata}
+					</section>
+					<section>
+						<button className="appButton" onClick={this.onToggle}>Play Trailer</button>
+					</section>
+				</div>
+				<div className="image-preview">
+					{this.state.poster_path && <img src={appConfig.TMDB_DETAIL_IMAGE_PATH + image_path } alt="Movie poster" />}
+				</div>
 			</section>
 		)
 	}

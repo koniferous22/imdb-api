@@ -1,0 +1,8 @@
+.searchBar * {
+	display: inline;
+	margin-right: 20px;
+}
+
+.searchBar {
+	margin-left: 50px;
+}

@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css?family=KoHo');
+@import url('https://fonts.googleapis.com/css?family=Kavivanar');
+
+.content.detail-view {
+	display: grid;
+	grid-template-columns: [column-start] 50% [text-end] auto [column-end];
+	grid-template-rows: auto;
+	grid-template-areas: "information preview";
+}
+
+@media only screen and (max-width: 768px) {
+	.content.detail-view {
+		grid-template-rows: [row-start] auto [text-end] auto [row-end];
+		grid-template-columns: auto;
+		grid-template-areas: 
+			"information"
+			"preview";
+	}	
+}
+
+.detail-view .image-preview {
+	grid-area: preview;
+}
+
+.detail-view .image-preview img {
+	width: 100%;
+	border-radius: 5px;
+	height: auto;
+	margin-top: 15px;
+}
+
+.detail-view .content-info-wrapper {
+	grid-area: information;
+}
+
+
+.detail-view .content-info-wrapper section {
+	margin: 10px 50px 0px 50px;
+}
+
+.detail-view .content-info-wrapper .overview {
+	font-family: 'Kavivanar';
+}
+
+.detail-view .content-info-wrapper .metadata {
+	font-family: 'KoHo';
+}
+
+.video-toolbar {
+	display: flex;
+	flex-direction: row;
+}
+
+.video-toolbar h3 {
+	flex-grow: 1;
+}
+
+.video-toolbar * {
+	margin: 20px 0;
+}
+
+.video-toolbar .goBack {
+	margin-right: 120px;
+}

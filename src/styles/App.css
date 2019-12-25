@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Exo');
+
 .appGrid {
 	display: grid;
 	grid-template-columns: auto;
@@ -7,6 +9,22 @@
 		"content";
 }
 
+.title {
+	font-family: 'Exo';
+	margin-left: 50px;
+}
+
+.title.inline {
+	display: inline;
+}
 .appGrid .content {
 	grid-area: content;
+	margin-top: 20px;
+}
+.appButton {
+	border-radius: 5px;
+	padding: 5px 20px;
+	box-shadow: 5px 10px 8px #888888;
+	border: 2px solid #333333;
+	background-color: transparent;
 }

@@ -1,0 +1,21 @@
+.entries .focus {
+	display: inline;
+	flex-grow: 1;
+}
+
+.entries div:not(.focus) {
+	display: none;
+}
+
+.entries .focus img {
+	display: inline;
+	transition: transform .2s;
+}
+
+.entries .focus span {
+	margin: 20px 10px 0 10px;
+}
+
+.entries .focus img:hover {
+	transform: scale(1.1);
+}

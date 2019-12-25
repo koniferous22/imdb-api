@@ -11,7 +11,7 @@ import {
 
 import { processThumbnailDataTranslateType } from '../helper/functions'
 
-import Thumbnails from './Thumbnails'
+import Carousel from './Carousel'
 
 const dashboardConfig = {
 	movies: {
@@ -68,11 +68,22 @@ class Dashboard extends React.Component {
 			isLoading: true,
 			message: 'Loading...'
 		})
+
+		/*const categoryRequests = Object.keys(dashboardConfig[type] || {}).map(category => {
+			return new Promise((resolve, reject) => {
+				dashboardConfig[type][category].fetch()
+					.then(body => resolve(processEntryData(body.results)))
+					.catch(error => reject(error))
+			})
+		})
+		Promise.all(categoryRequests)
+			.then((values) => {
+				console.log(values)
+			})*/
 		Object.keys(dashboardConfig[type] || {}).forEach(category => {
 			
 			dashboardConfig[type][category].fetch()
 				.then(body => {
-					
 					this.setState({
 						[category]: processEntryData(body.results),
 						isLoading: false,
@@ -100,27 +111,28 @@ class Dashboard extends React.Component {
 	}
 
 	render() {
-		
 		if (this.state.error) {
 			return (
-				<section>
+				<section className="content">
 					{this.state.message}
 				</section>
 			)
 		}
 		if (this.state.isLoading) {
 			return (
-				<section>
+				<section className="content">
 					{this.state.message}
 				</section>
 			)
 		}
 		const type = this.props.type
-		const categories = Object.keys(dashboardConfig[type] || {}).map((category, index) => (
-			<Thumbnails title={dashboardConfig[type][category].title} entries={this.state[category]} key={index}/>
-		))
+		const categories = Object.keys(dashboardConfig[type] || {}).map((category, index) => {
+			return (
+				<Carousel title={dashboardConfig[type][category].title} entries={this.state[category] || []} key={index} entriesPerSlide={this.props.entriesPerSlide}/>
+			)
+		})
 		return (
-			<section>
+			<section className="content">
 				{categories}
 			</section>
 		)

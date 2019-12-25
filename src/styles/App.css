@@ -4,9 +4,9 @@
 	grid-template-rows: [row-start] 60px [header-end] auto [row-end];
 	grid-template-areas:
 		"header"
-		"page";
+		"content";
 }
 
-.appGrid section {
-	grid-area: page;
+.appGrid .content {
+	grid-area: content;
 }

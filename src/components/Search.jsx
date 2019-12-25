@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Thumbnails from './Thumbnails'
+import Carousel from './Carousel'
 
 import { search } from '../requests/requests'
 
@@ -67,26 +67,32 @@ class Search extends React.Component {
 	}
 
 	render() {
-		var content = <section/>
+		var content = <section className="content"/>
 		if (this.state.error) {
 			content = (
-				<section>
+				<section className="content">
 					{this.state.message}
 				</section>
 			)
 		} else if (this.state.loading) {
 			content = (
-				<section>
+				<section className="content">
 					{this.state.message}
 				</section>
 			)	
 		} else {
-			content = Object.keys(mediaTypes).map((mediaType, index) => <Thumbnails key={index} title={mediaTypes[mediaType].label} entries={this.state[mediaType]} />)
+			content = Object.keys(mediaTypes).map((mediaType, index) => 
+				<Carousel 
+					key={index}
+					title={mediaTypes[mediaType].label}
+					entries={this.state[mediaType]}
+					entriesPerSlide={this.props.entriesPerSlide}
+				/>)
 			content = <section>{content}</section>
 		}
 
 		return (
-			<section>
+			<section className="content">
 				<h2>Search</h2>
 				<form onSubmit={this.handleSubmit}>
 					<input type="text" value={this.state.value} onChange={this.handleChange} />

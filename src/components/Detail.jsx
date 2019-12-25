@@ -61,21 +61,21 @@ class Detail extends React.Component {
 	render() {
 		if (this.state.error) {
 			return (
-				<section>
+				<section className="content">
 					{this.state.message}
 				</section>
 			)
 		}
 		if (this.state.isLoading) {
 			return (
-				<section>
+				<section className="content">
 					Loading...
 				</section>
 			)
 		}
 		if (this.state.video) {
 			return (
-				<section>
+				<section className="content">
 					<h4>
 						{this.state.title}
 					</h4>
@@ -97,7 +97,7 @@ class Detail extends React.Component {
 		)
 		const image_path = this.state.images.backdrops.length > 0 ? this.state.images.backdrops[0].file_path : this.state.backdrop_path
 		return (
-			<section>
+			<section className="content">
 				<h4>
 					{this.state.title}
 				</h4>

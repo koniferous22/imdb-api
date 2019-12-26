@@ -95,7 +95,10 @@ class Detail extends React.Component {
 						{/*Go Back button*/}
 						<button className="appButton goBack" onClick={this.onToggle}>Back</button>
 					</div>
-					{/*Video could be rendered in a better fashion, but for now I decided not to spend hours with documentation, or browsing the video stylesheets*/}
+					{/*
+					Video could be rendered in a better fashion, but for now I decided not to spend hours with documentation, or browsing the video stylesheets
+					Also video resource link in the document did not work, so I went with another hardcoded option
+					*/}
 					<ShakaPlayer autoPlay src={'https://storage.googleapis.com/shaka-demo-assets/bbb-dark-truths-hls/hls.m3u8'} width={1280} height={720} />
 				</section>
 			)

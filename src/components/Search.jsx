@@ -9,6 +9,10 @@ import { processThumbnailData } from '../helper/functions'
 import '../styles/components/Search.css'
 
 const mediaTypes = {
+	/*
+	Output media types, config only for carousel titles, when obtaining results
+	other media types could include people, as they appear in search results from API as wells
+	*/
 	movie: {
 		label: 'Movies'
 	},
@@ -20,11 +24,18 @@ const mediaTypes = {
 class Search extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {value: ''};
+		this.state = {
+			// form input
+			value: '',
+			// attribute serves when displaying "No Results found", at first load, we don't want to display that (cuz it's annoying)
+			// therefore it's set to true
+			found: true
+		};
 		Object.keys(mediaTypes).forEach(mediaType => {
 			this.state[mediaType] = []
 		})
 
+		// Event handlers for search input element
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
@@ -38,25 +49,30 @@ class Search extends React.Component {
 
 		const processResultsByMediaType = results => type => processThumbnailData(type)(results.filter(result => result.media_type === type))
 
-
 		this.setState({
 			loading: true,
 			message: 'Loading...'
 		});
 
+		// Async call
 		search(this.state.value || '')
 			.then(body => {
-				//console.log(body.results)
-				const results = processResultsByMediaType(body.results)
+				const getResults = processResultsByMediaType(body.results)
+				this.setState({
+					found: false
+				})
 				Object.keys(mediaTypes).forEach(mediaType => {
+					const extractedResults = getResults(mediaType)
 					this.setState({
-						[mediaType]: results(mediaType)
-					}, () => {console.log(this.state)})
+						// found state attribute, in case no results found, so that correct response is displayed
+						found: this.state.found || extractedResults.length > 0,
+						[mediaType]: extractedResults
+					})
 				})
 				this.setState({
 					loading: false,
 					error: false
-				}, () => {console.log(this.state)})
+				})
 
 			})
 			.catch(error => {
@@ -69,20 +85,31 @@ class Search extends React.Component {
 	}
 
 	render() {
+		// structure of this code is, in order to always render search bar (title, with for), then results
+		// Possible to probably organize better with different component decomposition, but for now works
 		var content = <section className="content"/>
 		if (this.state.error) {
 			content = (
-				<section className="content">
+				<section>
 					{this.state.message}
 				</section>
 			)
 		} else if (this.state.loading) {
 			content = (
-				<section className="content">
+				<section>
 					{this.state.message}
 				</section>
 			)	
+		} else if (!this.state.found) {
+			content = (
+				<section>
+					<h3 className="title">
+						No results found
+					</h3>
+				</section>
+			)
 		} else {
+			// map search results to carousels
 			content = Object.keys(mediaTypes).map((mediaType, index) => 
 				<Carousel
 					key={index}

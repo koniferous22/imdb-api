@@ -17,6 +17,9 @@ class App extends React.Component {
 		this.state = {
 			width: 0
 		}
+		// Event handler for window resizing (for responsive Carousels)
+		// Made global, so that works for both views, where carousels are used (Dashboard, Search)
+		// Inspiration was taken from stack overflow (cannot find the post)
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 	}
 
@@ -35,17 +38,22 @@ class App extends React.Component {
 
 
 	render() {
+		// Calculate how many entries per carousel slide in Search and Dashboard view
 		const imageWidthWithMargin = appConfig.CAROUSEL_IMAGE_WIDTH + appConfig.CAROUSEL_IMAGE_MARGIN
-		const entriesPerSlide = Math.max(Math.floor(this.state.width / imageWidthWithMargin), 1)
+		const entriesPerSlide = Math.max(Math.floor((this.state.width - 2 * appConfig.CAROUSEL_ARROW_WIDTH) / imageWidthWithMargin), 1)
 		return (
 			<BrowserRouter>
+			{/*Router wrapper*/}
 				<div className='appGrid'>
+				{/*App is with CSS3 Grid Layoud, for more details browse the styles*/}
 					<Header />
+					{/* Header/NavBar component*/}
 					<Switch>
 						<Route path='/search' render={(routeProps) => <Search entriesPerSlide={entriesPerSlide}/>} />
 						<Route exact path='/:type' render={(routeProps) => <Dashboard type={routeProps.match.params.type} entriesPerSlide={entriesPerSlide}/>} />
 						<Route path='/:type/:movieId' render={(routeProps) => <Detail type={routeProps.match.params.type} id={routeProps.match.params.movieId}/>}/>
 						<Redirect from='/' to='/movies' />
+						{/* redirect, so that by loading Movie dashboard is displayed, by default*/}
 					</Switch>
 				</div>
 			</BrowserRouter>

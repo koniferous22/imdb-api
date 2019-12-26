@@ -1,5 +1,7 @@
 import appConfig from '../appConfig'
 
+
+// Generalized api request, includes constructing url, so that requests down below are more readable, and self explanatory
 function apiRequest(resource, options) {
 	const urlOptsString = Object.keys(options).map(key => '&' + key + '=' + options[key]).join('')
 	// Assuming get request only
@@ -7,6 +9,7 @@ function apiRequest(resource, options) {
 		.then(response => response.json())
 }
 
+// Movie Dashboard requests
 
 export function getPopularMovies(page=1) {
 	return apiRequest('/discover/movie', {
@@ -34,6 +37,8 @@ export function getDocumentaryMovies(page=1) {
 	})
 }
 
+// TV Dashboard Requests
+
 export function getPopularTvShows(page=1) {
 	return apiRequest('/discover/tv', {
 		language: "en-US",
@@ -60,6 +65,8 @@ export function getDocumentaryTvShows(page=1) {
 	})
 }
 
+// Detail View Requests
+
 export function getMovieDetails(movieId) {
 	return apiRequest('/movie/' + movieId, {
 		append_to_response: 'images,videos'
@@ -71,6 +78,8 @@ export function getTvShowDetails(tvId) {
 		append_to_response: 'images,videos'
 	})
 }
+
+// Search request
 
 export function search(query, page=1) {
 	return apiRequest('/search/multi', {

@@ -19,3 +19,11 @@
 .entries .focus img:hover {
 	transform: scale(1.1);
 }
+.focus .noimage {
+	width: 154px;
+	height: 231px;
+}
+
+.focus .noimage:hover {
+	transform: scale(1.1);
+}

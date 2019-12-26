@@ -9,6 +9,9 @@ import { getMovieDetails, getTvShowDetails } from '../requests/requests'
 
 import '../styles/components/Detail.css'
 
+// Detail view
+// I decided to include video view as well, since it relates to same topic, i.e. the browsed movie/tv show
+
 class Detail extends React.Component {
 
 	constructor() {
@@ -17,10 +20,12 @@ class Detail extends React.Component {
 			isLoading: true,
 			video: false
 		}
+		// Event handler for video button
 		this.onToggle = this.onToggle.bind(this)
 	}
 
 	componentDidMount() {
+		// Sanity check if invalid content type was not passed from URL
 		var getData = null
 		const type = this.props.type
 		switch (type) {
@@ -33,14 +38,19 @@ class Detail extends React.Component {
 			default:
 				getData = null
 		}
+
 		if (getData) {
+			// Filter out unnecessary keys, so that we work with smaller object
 			const filterRequiredKeys = ({genres, homepage, images, overview, popularity, poster_path, release_date, runtime, tagline, title }) => 
 				({genres, homepage, images, overview, popularity, poster_path, release_date, runtime, tagline, title })
 			this.setState({isLoading: true})
+			// Async call
 			getData(this.props.id)
 				.then(body => {
 					this.setState({
 						...filterRequiredKeys(body),
+						// disable both flags that fetched data is rendered
+						// Could be implemented with Promise.all().then() construct
 						isLoading: false,
 						error: false
 					})
@@ -55,6 +65,7 @@ class Detail extends React.Component {
 		}
 	}
 
+	// Video Button event
 	onToggle() {
 		this.setState({video: !this.state.video})
 	}
@@ -81,12 +92,15 @@ class Detail extends React.Component {
 						<h3 className="title">
 							{this.state.title}
 						</h3>
+						{/*Go Back button*/}
 						<button className="appButton goBack" onClick={this.onToggle}>Back</button>
 					</div>
+					{/*Video could be rendered in a better fashion, but for now I decided not to spend hours with documentation, or browsing the video stylesheets*/}
 					<ShakaPlayer autoPlay src={'https://storage.googleapis.com/shaka-demo-assets/bbb-dark-truths-hls/hls.m3u8'} width={1280} height={720} />
 				</section>
 			)
 		}
+
 		const releaseDate = new Date(this.state.release_date).toLocaleDateString('cs-CZ')
 		const metadata = (
 			<ul>
@@ -98,7 +112,7 @@ class Detail extends React.Component {
 				{this.state.runtime && <li>{'Runtime: ' + this.state.runtime + ' minutes'}</li>}
 			</ul>
 		)
-		console.log('ass')
+		// Use backdrop path, if no images are attached
 		const image_path = this.state.images.backdrops.length > 0 ? this.state.images.backdrops[0].file_path : this.state.backdrop_path
 		return (
 			<section className="content detail-view">

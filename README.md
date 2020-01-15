@@ -1,1 +1,2 @@
-### Task assignment for 24i
+Simple application on top of imdb API,
+previously coded as interview task

@@ -11,7 +11,7 @@ Pure component for images in carousel (single slide)
 const Slide = props => {
 
 	return (
-		<div className={props.display}>
+		<div className={props.display ? 'focus' : ''}>
 		{/*display attribute determines if slide is rendered or nah*/}
 			{
 				props.images.map((image, index) => (
